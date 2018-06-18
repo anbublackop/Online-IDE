@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> AI/O-ide </title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
+	<link rel="shortcut icon" href="{{ url_for('static', filename = 'icon.png') }}">
+
+	<script src="{{ url_for ('static', filename = 'ace.js')}}" type="text/javascript" charset="utf-8"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.js" integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
+  	crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{{url_for('static', filename = 'bootstrap.min.js')}}" ></script>
+
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		  <a class="navbar-brand" href="#">AI/O-ide</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+		    <ul class="navbar-nav mr-auto">
+		      	<li class="nav-item active">
+		        	<a class="nav-link" href="{{url_for('Homepage')}}">Home <span class="sr-only">(current)</span></a>
+		      	</li>
+		      	<li class="nav-item dropdown">
+		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		          	Dropdown
+		        	</a>
+		        	<div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
+		          		<a class="dropdown-item text-light" href="#">Action</a>
+		          		<a class="dropdown-item text-light" href="#">Another action</a>
+		          		<a class="dropdown-item text-light" href="#">Something else here</a>
+		        	</div>
+		      	</li>
+		      	<ul class="navbar-nav" style="margin-right:900px">
+		      		<li class="nav-item active">
+		        		<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
+		      		</li>
+		  </div>
+
+		</nav></header>
+</head>
+
+<style type="text/css">
+		#myEditor{
+			height:400px;
+		}	
+
+</style>
+
+<body>
+
+	<div id = "myEditor" name = "source"></div>
+
+	<!--<button type="button" id = "showText" class="btn btn-light" onclick = "showCode()">ShowCode</button>-->
+
+	<form action = "{{url_for('compile_and_run')}}" method = "POST">
+		<input type="hidden" id = "Code" name="source" value = ""/>
+		<script type="text/javascript"> 
+			document.getElementById("Code").value = showCode();
+		</script>
+		<!--<div id = "TextAr"> TextArea </div>-->
+		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" type="submit" value="Submit"/>
+	</form>	
+	
+
+	<script>
+
+		var editor = ace.edit("myEditor");
+    	editor.setTheme("ace/theme/monokai");
+    	editor.session.setMode("ace/mode/python");
+
+		function showCode(){
+				document.getElementById("TextAr").innerHTML = editor.getValue();
+				return editor.getValue();
+			}
+
+	</script>
+	
+	<!--<script type="text/javascript">
+	
+		var editor, editorText;
+
+		YUI().use(
+		  'aui-ace-editor',
+		  function(Y) {
+		    editor = new Y.AceEditor(
+		      {
+		        boundingBox: '#myEditor',
+		        mode: 'javascript',
+		        value: "//Write your code here!"
+		      }
+		    );
+		    editor.render();
+		  }
+		);
+	
+
+	<button type="button" id = "showText" class="btn btn-light" onclick = "showCode()">ShowCode</button>
+	<button type="button" id = "clearText" class="btn btn-dark" onclick = "resetCode()">Clear</button>-->
+	<div>	
+			{%if Result %}
+				
+				{{Result|pprint}}
+			
+			{%endif%}	
+	</div>
+
+</body>
+</html>
