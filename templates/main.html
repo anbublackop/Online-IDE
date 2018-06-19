@@ -22,7 +22,7 @@
 		      	<li class="nav-item active">
 		        	<a class="nav-link" href="{{url_for('Homepage')}}">Home <span class="sr-only">(current)</span></a>
 		      	</li>
-		      	<li class="nav-item dropdown">
+		      	<!--<li class="nav-item dropdown">
 		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		          	Dropdown
 		        	</a>
@@ -31,7 +31,7 @@
 		          		<a class="dropdown-item text-light" href="#">Another action</a>
 		          		<a class="dropdown-item text-light" href="#">Something else here</a>
 		        	</div>
-		      	</li>
+		      	</li>-->
 		      	<ul class="navbar-nav" style="margin-right:900px">
 		      		<li class="nav-item active">
 		        		<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
@@ -52,8 +52,6 @@
 
 	<div id = "myEditor" name = "source"></div>
 
-	<!--<button type="button" id = "showText" class="btn btn-light" onclick = "showCode()">ShowCode</button>-->
-
 	<script>
 
 		var editor = ace.edit("myEditor");
@@ -67,16 +65,14 @@
 	</script>
 
 	<form action = "http://localhost:5000/compile_and_run/" method = "POST">
+		
 		<textarea id = "Code" name="source" style="display:none;"></textarea>
-		<!--<script type="text/javascript"> 
-			document.getElementById("Code").value = showCode();  
-		</script>
-		<div id = "TextAr"> TextArea </div>-->
 		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" type="submit" value="Submit"/>
+	
 	</form>	
 	
-
 	<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000'" value="Reset"/>
+	
 	<!--<script type="text/javascript">
 	
 		var editor, editorText;
@@ -93,11 +89,8 @@
 		    );
 		    editor.render();
 		  }
-		);
-	
+		);-->
 
-	<button type="button" id = "showText" class="btn btn-light" onclick = "showCode()">ShowCode</button>
-	<button type="button" id = "clearText" class="btn btn-dark" onclick = "resetCode()">Clear</button>-->
 	<div>	
 			{%if Result %}
 				
