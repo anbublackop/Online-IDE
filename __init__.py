@@ -23,13 +23,15 @@ def compile_and_run():
 	client_secret_key = "71f2e0924665da501e290e3a2d831581a9f3a451"
 
 	source = request.form['source']
+	input_received = request.form['input']
 
 	data = {
     'client_secret': client_secret_key,
     'async': 0,
     'source': source,
-    'lang': "PYTHON",
+    'lang': "PYTHON3",
     'time_limit': 5,
+    'input':input_received,
     'memory_limit': 262144,
 	}
 

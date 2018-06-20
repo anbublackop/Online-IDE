@@ -67,10 +67,12 @@
 	<form action = "http://localhost:5000/compile_and_run/" method = "POST">
 		
 		<textarea id = "Code" name="source" style="display:none;"></textarea>
-		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" type="submit" value="Submit"/>
-	
+  		<label for="comment">Stdin:</label>
+		<textarea class="form-control" rows="5" id="stdin" name = "input"></textarea>
+  		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" type="submit" value="Submit"/>
+
 	</form>	
-	
+
 	<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000'" value="Reset"/>
 	
 	<!--<script type="text/javascript">
