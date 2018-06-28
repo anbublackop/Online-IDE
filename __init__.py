@@ -19,23 +19,23 @@ def login():
 @app.route('/compile_and_run/', methods = ['POST'])
 def compile_and_run():
 
-	endpoint_run = "http://api.hackerearth.com/code/run/"
-	client_secret_key = "71f2e0924665da501e290e3a2d831581a9f3a451"
+	endpoint_run = "https://api.jdoodle.com/v1/execute"
+	clientId = "ac4680b2f667cd4864a60e9d5cd4d18f"
+	client_secret_key = "4a941cc902adaca23c1e67330856b697726c68f84c5a88ccd1bf5c4cb7568ea3"
 
-	source = request.form['source']
-	input_received = request.form['input']
+	source = request.form["source"]
+	input_received = request.form["input"]
 
 	data = {
-    'client_secret': client_secret_key,
-    'async': 0,
-    'source': source,
-    'lang': "PYTHON3",
-    'time_limit': 5,
-    'input':input_received,
-    'memory_limit': 262144,
-	}
+    'clientSecret': client_secret_key,
+    'clientId': clientId,
+    'script': source,
+    'stdin': input_received,
+    'language': "python3",
+    'versionIndex': '2'
+	}	
 
-	response = requests.post(endpoint_run, data = data)
+	response = requests.post(endpoint_run, json=data)
 
 	return render_template('main.html', Result = response.text)
 
