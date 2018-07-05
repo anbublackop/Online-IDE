@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title> AI/O-ide </title>
+	<header>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
 	<link rel="shortcut icon" href="{{ url_for('static', filename = 'icon.png') }}">
 
@@ -10,7 +11,6 @@
   	crossorigin="anonymous"></script>
 	<script type="text/javascript" src="{{url_for('static', filename = 'bootstrap.min.js')}}" ></script>
 
-	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		  <a class="navbar-brand" href="#">AI/O-ide</a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,7 +20,7 @@
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 		    <ul class="navbar-nav mr-auto">
 		      	<li class="nav-item active">
-		        	<a class="nav-link" href="{{url_for('Homepage')}}">Home <span class="sr-only">(current)</span></a>
+		        	<a class="nav-link" href="{{url_for('home')}}"> Home <span class="sr-only">(current)</span></a>
 		      	</li>
 		      	<!--<li class="nav-item dropdown">
 		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,13 +32,21 @@
 		          		<a class="dropdown-item text-light" href="#">Something else here</a>
 		        	</div>
 		      	</li>-->
-		      	<ul class="navbar-nav" style="margin-right:900px">
-		      		<li class="nav-item active">
-		        		<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
-		      		</li>
+		      	<ul class="navbar-nav">
+		        	{% if session['logged_in'] %}
+					<a class="nav-link" href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout </a>
+					<p class="nav-link" style = "left:100%;"> Hello {{ session['username'] }} </p>
+					{% else %}
+					<a class="nav-link" href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login </a>
+					<a class="nav-link" href="/register/"><span class="glyphicon glyphicon-pencil"></span> Register</a>
+					{% endif %}	
+					<!--<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>-->
+				</ul>
 		  </div>
 
-		</nav></header>
+		</nav>
+</header>
+
 </head>
 
 <style type="text/css">
@@ -51,25 +59,45 @@
 <body>
 
 	<div id = "myEditor" name = "source"></div>
-
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script>
 
 		var editor = ace.edit("myEditor");
-    	editor.setTheme("ace/theme/monokai");
+    	editor.setTheme("ace/theme/pastel_on_dark");
     	editor.session.setMode("ace/mode/python");
 
     	editor.getSession().on("change", function(){
     				$("#Code").val(editor.getSession().getValue());
     			});
 
-	</script>
 
-	<form action = "http://localhost:5000/compile_and_run/" method = "POST">
-		
+    		// $(function(){
+    		// 	$('form').on('submit', function(e){
+    		// 		e.preventDefault();
+    		// 		$.ajax({
+    		// 			type: 'post',
+    		// 			url: "{{url_for('compile_and_run')}}",
+    		// 			data: $('form').serialize(),
+    		// 			success: function(data){
+    		// 				$('#Result').val() = data;
+    		// 			}
+    		// 		});
+    		// 	});
+    		// });
+	      
+    </script>
+    <div>	
+
+    	<p> <h3> </h3> </p>
+
+    </div>
+	<form action = "{{url_for('compile_and_run')}}" method = "POST">
+	<!--<form>-->
+
 		<textarea id = "Code" name="source" style="display:none;"></textarea>
   		<label for="comment">Stdin:</label>
 		<textarea class="form-control" rows="5" id="stdin" name = "input"></textarea>
-  		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" type="submit" value="Submit"/>
+  		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" name = "submit" type="submit" value="Submit"/>
 
 	</form>	
 
@@ -93,7 +121,8 @@
 		  }
 		);-->
 
-	<div>	
+	<div id="Result">	
+
 			{%if Result %}
 				
 				{{Result|pprint}}
