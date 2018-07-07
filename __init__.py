@@ -6,6 +6,7 @@ from wtforms import *
 from passlib.hash import sha256_crypt
 from MySQLdb import escape_string as thwart
 import gc
+from datetime import datetime
 
 
 app = Flask (__name__)
@@ -32,6 +33,10 @@ def logout():
 	session.pop('username')
 	return redirect(url_for('home'))
 
+@app.route('/MyCode/')
+def myCodes():
+	return render_template('ShowCode.html')
+
 @app.route('/compile_and_run/', methods = ['POST'])
 def compile_and_run():
 
@@ -52,6 +57,13 @@ def compile_and_run():
 	}	
 
 	response = requests.post(endpoint_run, json=data)
+
+	if session['logged_in'] and session['username']:
+		c, conn = connection()
+		c.execute("select uid from users where username = (%s)", (session['username'],))
+		userid = c.fetchone()[0]
+		c.execute("insert into mycode (userid, createdon, data) values (%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source))))
+		conn.commit()
 
 	return render_template('main.html', Result = response.text)
 
