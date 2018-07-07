@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title> AI/O-ide </title>
+	<title> PyDee </title>
 	<header>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
 	<link rel="shortcut icon" href="{{ url_for('static', filename = 'icon.png') }}">
@@ -12,16 +12,15 @@
 	<script type="text/javascript" src="{{url_for('static', filename = 'bootstrap.min.js')}}" ></script>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		  <a class="navbar-brand" href="#">AI/O-ide</a>
+		  <a class="navbar-brand" href="{{url_for('home')}}"> PyDee </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
 
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		    <ul class="navbar-nav mr-auto">
-		      	<li class="nav-item active">
-		        	<a class="nav-link" href="{{url_for('home')}}"> Home <span class="sr-only">(current)</span></a>
-		      	</li>
+		    {% if session['logged_in'] %}
+		    <p class="navbar-nav nav-link" style = "margin-top:8px;color:white; margin-left: 460px;"> Hello {{ session['username'] }}! </p>
+		    {% endif %}
 		      	<!--<li class="nav-item dropdown">
 		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		          	Dropdown
@@ -32,10 +31,10 @@
 		          		<a class="dropdown-item text-light" href="#">Something else here</a>
 		        	</div>
 		      	</li>-->
-		      	<ul class="navbar-nav">
+		      	<ul class="navbar-nav" style="margin-left:450px; margin-top: 8px;">
 		        	{% if session['logged_in'] %}
+					<a class="nav-link" href="/MyCode/"><span class="glyphicon glyphicon-log-out"></span> My Codes </a>
 					<a class="nav-link" href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout </a>
-					<p class="nav-link" style = "left:100%;"> Hello {{ session['username'] }} </p>
 					{% else %}
 					<a class="nav-link" href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login </a>
 					<a class="nav-link" href="/register/"><span class="glyphicon glyphicon-pencil"></span> Register</a>
@@ -63,7 +62,7 @@
 	<script>
 
 		var editor = ace.edit("myEditor");
-    	editor.setTheme("ace/theme/pastel_on_dark");
+    	editor.setTheme("ace/theme/monokai");
     	editor.session.setMode("ace/mode/python");
 
     	editor.getSession().on("change", function(){
@@ -99,9 +98,17 @@
 		<textarea class="form-control" rows="5" id="stdin" name = "input"></textarea>
   		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" name = "submit" type="submit" value="Submit"/>
 
+  		<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000'" value="Reset"/>
+
 	</form>	
 
-	<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000'" value="Reset"/>
+	<div> 
+		<textarea id = "Result" class="form-control" rows="5" name = "output">
+			{%if Result %}
+				{{ Result|pprint }}
+			{%endif%}
+		</textarea> 
+	</div>
 	
 	<!--<script type="text/javascript">
 	
@@ -120,15 +127,6 @@
 		    editor.render();
 		  }
 		);-->
-
-	<div id="Result">	
-
-			{%if Result %}
-				
-				{{Result|pprint}}
-			
-			{%endif%}	
-	</div>
 
 </body>
 </html>
