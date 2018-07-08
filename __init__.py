@@ -1,4 +1,4 @@
-from flask import Flask, render_template	
+from flask import Flask, render_template, jsonify	
 from flask import Flask, redirect, url_for, request, render_template, session, escape, abort, flash, send_from_directory
 import sys, requests, json
 from dbconnect import connection
@@ -18,10 +18,21 @@ def home():
 
 @app.route('/checkLogin/', methods = ['POST'])
 def checkLogin():
+	c, conn = connection()
 	username = request.form['username']
-	session["logged_in"] = True
-	session["username"] = username
-	return redirect(url_for('home'))
+	password = request.form['password']
+	x = c.execute("select username from users where username = (%s)",(username,))
+	if (c.fetchone() is not None):
+		c.execute("select * from users where username = (%s) and password = (%s)",(username, password))
+		if (c.fetchone() is not None):
+			session["logged_in"] = True
+			session["username"] = username
+			return redirect(url_for('home'))
+		else:
+			flash("Password is incorrect!")
+			return render_template('Login.html')
+	flash("Please create an account first to login!")		
+	return render_template('Login.html')			
 
 @app.route('/login/')
 def login():
@@ -29,13 +40,10 @@ def login():
 
 @app.route('/logout/')
 def logout():
-	session.pop('logged_in')
-	session.pop('username')
+	if session['logged_in'] and session['username']:
+		session.pop('logged_in')
+		session.pop('username')
 	return redirect(url_for('home'))
-
-@app.route('/MyCode/')
-def myCodes():
-	return render_template('ShowCode.html')
 
 @app.route('/compile_and_run/', methods = ['POST'])
 def compile_and_run():
@@ -58,7 +66,7 @@ def compile_and_run():
 
 	response = requests.post(endpoint_run, json=data)
 
-	if session['logged_in'] and session['username']:
+	if session.get('logged_in') and session.get('username'):
 		c, conn = connection()
 		c.execute("select uid from users where username = (%s)", (session['username'],))
 		userid = c.fetchone()[0]
@@ -68,8 +76,8 @@ def compile_and_run():
 	return render_template('main.html', Result = response.text)
 
 class RegistrationForm(Form):
-	username = TextField('username', [validators.Length(min = 4, max = 20)])
-	email = TextField('email', [validators.Length(min = 4, max = 50)])
+	username = TextField('Username', [validators.Length(min = 4, max = 20)])
+	email = TextField('Email', [validators.Length(min = 4, max = 50)])
 	password = PasswordField('Password', [validators.Required(), validators.EqualTo('confirm', message = "Passwords don't match!")])
 	confirm = PasswordField('Repeat Password')
 	accept_tos = BooleanField('I accept the <a href="/tos/">Terms of service</a> and the <a href = "/privacy/"privacy notice</a> (Last updated Jul 2 2018)', [validators.required()])
@@ -104,7 +112,6 @@ def register_page():
 
 				session["logged_in"] = True
 				session["username"] = username
-				print (session["username"])
 
 				return redirect(url_for('home'))
 
@@ -112,6 +119,17 @@ def register_page():
 
 	except Exception as e:
 		return (str(e))	
+
+@app.route('/PreviousCodes/')
+def previousCodes():
+	c, conn = connection()
+	c.execute("select * from users where username = (%s)", (session['username'],))
+	userid = c.fetchone()[0]
+	c.execute("select * from mycode where userid = (%s)",(userid,))
+	previous_codes_list = c.fetchall()
+	print (previous_codes_list)
+	return render_template('previouscodes.html', list = previous_codes_list)
+
 
 if __name__== '__main__':
 	app.run(debug = True)
