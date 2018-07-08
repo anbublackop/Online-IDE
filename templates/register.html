@@ -2,19 +2,22 @@
 <html>
 <head>
 	<title>User Registeration</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for ('static', filename = 'login.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
 </head>
 <body>
 	{% from "_formhelpers.html" import render_field %}
-
-	<form method = post>
-		<dl>
-			{{ render_field(form.username) }}
-			{{ render_field(form.email) }}
-			{{ render_field(form.password) }}
-			{{ render_field(form.confirm) }}
-			{{ render_field(form.accept_tos) }}
-		</dl>
-		<p><input type = submit value = register></p>
-	</form>
+	<div class = "wrapper">
+		<form class = "form-signin" method = post>
+			<dl class = "form-group" align = "center" vertical-align = "middle">
+				{{ render_field(form.username) }}
+				{{ render_field(form.email) }}
+				{{ render_field(form.password) }}
+				{{ render_field(form.confirm) }}
+				{{ render_field(form.accept_tos) }}
+			</dl>
+			<p><input class="btn btn-lg btn-primary btn-block" type = submit value = Register></p>
+		</form>
+	<div>
 </body>
 </html>
