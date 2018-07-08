@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	
+	{% for rows in list %}
+		{% for row in rows %}
+			<div><a href="#">{{ row }}</a></div>
+		{% endfor %}
+	{% endfor %}
+</body>
+</html>
