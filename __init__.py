@@ -73,7 +73,7 @@ def compile_and_run():
 		c.execute("insert into mycode (userid, createdon, data) values (%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source))))
 		conn.commit()
 
-	return render_template('main.html', Result = response.text)
+	return render_template('main.html', Result = json.loads(response.text))
 
 class RegistrationForm(Form):
 	username = TextField('Username', [validators.Length(min = 4, max = 20)])
