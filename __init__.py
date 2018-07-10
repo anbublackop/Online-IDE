@@ -5,15 +5,19 @@ from dbconnect import connection
 from wtforms import *
 from passlib.hash import sha256_crypt
 from MySQLdb import escape_string as thwart
-import gc
+import gc, string, random
 from datetime import datetime
 
 
 app = Flask (__name__)
 app.secret_key = "Random String"
 
-@app.route('/')
+@app.route('/', methods = ['POST', 'GET'])
 def home():
+	if request.method == "POST":
+		uniqueid = request.form['uniqueid']
+		data = request.form['data']
+		return render_template('main.html', data = data)
 	return render_template ('main.html')
 
 @app.route('/checkLogin/', methods = ['POST'])
@@ -70,7 +74,8 @@ def compile_and_run():
 		c, conn = connection()
 		c.execute("select uid from users where username = (%s)", (session['username'],))
 		userid = c.fetchone()[0]
-		c.execute("insert into mycode (userid, createdon, data) values (%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source))))
+		uniqueid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+		c.execute("insert into mycode (userid, createdon, data, uniqueid) values (%s,%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source)), uniqueid))
 		conn.commit()
 
 	return render_template('main.html', Result = json.loads(response.text))
