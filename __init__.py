@@ -127,7 +127,6 @@ def previousCodes():
 	userid = c.fetchone()[0]
 	c.execute("select * from mycode where userid = (%s)",(userid,))
 	previous_codes_list = c.fetchall()
-	print (previous_codes_list)
 	return render_template('previouscodes.html', list = previous_codes_list)
 
 
