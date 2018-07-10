@@ -104,12 +104,15 @@
 	</form>	
 
 	<div> 
-
 		<textarea id = "output" class="form-control" rows="5" name = "output">
-			{% if Result %}
-				{{ Result|pprint }}
-			{% endif %}
 		</textarea> 
+
+		{% if Result %}
+			<script type="text/javascript">
+				var x = {{ Result['output']|tojson }};
+				document.getElementById("output").value = x;
+			</script>
+		{% endif %}
 	</div>
 	
 	<!--<script type="text/javascript">
