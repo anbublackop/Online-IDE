@@ -1,14 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Previous Codes</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
+	<style type="text/css">
+		
+		.inline {
+		  display: inline;
+		}
+
+		.link-button {
+		  background: none;
+		  border: none;
+		  color: blue;
+		  text-decoration: underline;
+		  cursor: pointer;
+		  font-size: 1em;
+		  font-family: serif;
+		}
+
+		.link-button:focus {
+		  outline: none;
+		}
+
+		.link-button:active {
+		  color:red;
+		}
+
+	</style>
+
 </head>
 <body>
-	
-	{% for rows in list %}
-		{% for row in rows %}
-			<div><a href="#">{{ row }}</a></div>
-		{% endfor %}
-	{% endfor %}
+	<table class = "table">
+		
+			<tr>
+				<th scope = "col"> Key </th>
+				<th scope = "col"> Created On </th>
+				<th scope = "col"> Data </th>
+			</tr>
+		
+				{% for rows in list %}
+					<tr>
+						<form action = "{{url_for('home')}}" method = "post">
+
+							<td><button type="submit" name="uniqueid" value="{{ rows[4] }}" class="link-button">{{ rows[4] }}</button></td>
+							<td>{{ rows[2] }}</td>
+							<td><input type ="hidden" name="data" value = "{{ rows[3] }}" >{{ rows[3] }}</td>
+
+						</form>	
+					</tr>	
+				{% endfor %}
+	</table>
+
+
 </body>
 </html>
