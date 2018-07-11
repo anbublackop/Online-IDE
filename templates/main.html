@@ -104,6 +104,9 @@
 		<textarea id = "Code" name="source" style="display:none;"></textarea>
   		<label for="comment">Stdin:</label>
 		<textarea class="form-control" rows="5" id="stdin" name = "input"></textarea>
+  		{% if uniqueid %}
+  			<input type = "hidden" name = "uniqueid" value = {{uniqueid}}/>
+  		{% endif %}
   		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" name = "submit" type="submit" value="Submit"/>
 
   		<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000/'" value="Reset"/>
@@ -121,24 +124,6 @@
 			</script>
 		{% endif %}
 	</div>
-	
-	<!--<script type="text/javascript">
-	
-		var editor, editorText;
-
-		YUI().use(
-		  'aui-ace-editor',
-		  function(Y) {
-		    editor = new Y.AceEditor(
-		      {
-		        boundingBox: '#myEditor',
-		        mode: 'javascript',
-		        value: "//Write your code here!"
-		      }
-		    );
-		    editor.render();
-		  }
-		);-->
 
 </body>
 </html>
