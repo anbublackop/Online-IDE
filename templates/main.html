@@ -67,7 +67,10 @@
     	editor.session.setMode("ace/mode/python");
     	
     	{% if data %}
-    		editor.setValue({{ data|tojson }}, 1);
+    		var data = {{ data|tojson }};
+    		data = data.replace(/(?:\\[rn]|[\r\n])/g,"\n");
+    		data = data.replace(/\\"/g, '"');
+    		editor.setValue(data, 1);
     	{% endif %}
 
     	editor.getSession().on("change", function(){
