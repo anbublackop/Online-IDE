@@ -17,7 +17,7 @@ def home():
 	if request.method == "POST":
 		uniqueid = request.form['uniqueid']
 		data = request.form['data']
-		return render_template('main.html', data = data)
+		return render_template('main.html', data = data, uniqueid = uniqueid)
 	return render_template ('main.html')
 
 @app.route('/checkLogin/', methods = ['POST'])
@@ -69,13 +69,18 @@ def compile_and_run():
 	}	
 
 	response = requests.post(endpoint_run, json=data)
+	c, conn = connection()
 
 	if session.get('logged_in') and session.get('username'):
-		c, conn = connection()
+		
 		c.execute("select uid from users where username = (%s)", (session['username'],))
 		userid = c.fetchone()[0]
-		uniqueid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
-		c.execute("insert into mycode (userid, createdon, data, uniqueid) values (%s,%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source)), uniqueid))
+		if not request.form.get('uniqueid'):
+			uniqueid = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+			c.execute("insert into mycode (userid, createdon, data, uniqueid) values (%s,%s,%s,%s)", (userid, thwart(str(datetime.now())), thwart(str(source)), uniqueid))
+		else:
+			c.execute("update mycode set data = (%s) where uniqueid = (%s)", (thwart(str(source)), str(request.form['uniqueid'])[:-1]))
+			print (request.form['uniqueid'],str(source))
 		conn.commit()
 
 	return render_template('main.html', Result = json.loads(response.text))
