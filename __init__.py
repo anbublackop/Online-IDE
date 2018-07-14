@@ -18,7 +18,7 @@ def home():
 		uniqueid = request.form['uniqueid']
 		data = request.form['data']
 		return render_template('main.html', data = data, uniqueid = uniqueid)
-	return render_template ('main.html')
+	return render_template('main.html')
 
 @app.route('/checkLogin/', methods = ['POST'])
 def checkLogin():
@@ -82,8 +82,8 @@ def compile_and_run():
 			c.execute("update mycode set data = (%s) where uniqueid = (%s)", (thwart(str(source)), str(request.form['uniqueid'])[:-1]))
 			print (request.form['uniqueid'],str(source))
 		conn.commit()
-
-	return render_template('main.html', Result = json.loads(response.text))
+		print (json.loads(response.text))
+	return jsonify(json.loads(response.text))
 
 class RegistrationForm(Form):
 	username = TextField('Username', [validators.Length(min = 4, max = 20)])
