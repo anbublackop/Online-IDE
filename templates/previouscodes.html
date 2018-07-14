@@ -37,6 +37,7 @@
 				<th scope = "col"> Key </th>
 				<th scope = "col"> Created On </th>
 				<th scope = "col"> Data </th>
+				<th scope = "col"> Remove </th>
 			</tr>
 		
 				{% for rows in list %}
@@ -46,7 +47,7 @@
 							<td><button type="submit" name="uniqueid" value="{{ rows[4] }}" class="link-button" style="color: orange; font-family: 'ubuntu';">{{ rows[4] }}</button></td>
 							<td>{{ rows[2] }}</td>
 							<td><input type ="hidden" name="data" value = "{{ rows[3] }}" >{{ rows[3] }}</td>
-
+							
 						</form>	
 					</tr>	
 				{% endfor %}
