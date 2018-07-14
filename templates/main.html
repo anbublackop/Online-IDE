@@ -73,7 +73,6 @@
     		data = data.replace(/\\"/g, '"');
     		data = data.replace(/^\s*\n/gm,"")
     		editor.setValue(data, -1);
-    		$("#Code").val(editor.getSession().getValue());
 		{% endif %}
 
 		editor.getSession().on("change", function(){
@@ -82,6 +81,7 @@
 
 		$(function(){
 		 	$('form').on('submit', function(e){
+		 		$("#Code").val(editor.getSession().getValue());
 		 		e.preventDefault();
 		 		$.ajax({
 		 			type: 'post',
