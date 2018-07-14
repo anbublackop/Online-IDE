@@ -40,7 +40,6 @@
 					<a class="nav-link" style = "margin-left:1050px;position:absolute;margin-top:-20px;" href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login </a>
 					<a class="nav-link" style = "margin-left:1150px;position:absolute;margin-top:-20px;" href="/register/"><span class="glyphicon glyphicon-pencil"></span> Register</a>
 					{% endif %}	
-					<!--<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>-->
 				</ul>
 		  </div>
 
@@ -75,19 +74,26 @@
     		editor.setValue(data, -1);
 		{% endif %}
 
-		// editor.getSession().on("change", function(){
-		// 		$("#Code").val(editor.getSession().getValue());
-		// 	});  
-
 		$(function(){
 		 	$('form').on('submit', function(e){
 		 		$("#Code").val(editor.getSession().getValue());
 		 		e.preventDefault();
 		 		$.ajax({
 		 			type: 'post',
+		 			beforeSend: function(){
+		 				$('#loader').show();
+		 			},
+
 		 			url: "{{url_for('compile_and_run')}}",
-		 			data: $('form').serialize(),		
+		 			
+		 			{% if uniqueid %}
+		 				data: $('form').serialize()+"&uniqueid={{uniqueid}}",		
+		 			{% else %}
+		 				data: $('form').serialize(),		
+		 			{% endif %}
+		 			
 		 		}).done(function(data) {
+		 			$('#loader').hide();
 		 			document.getElementById("ShowResult").value = data['output'];
 		 			}
 		 		)
@@ -95,30 +101,22 @@
 		 });
 
     </script>
+    
+    <div id = 'loader' style = "position:fixed; z-index:1; left:550px; top: 200px; display:none;"><img src = "{{url_for('static', filename = 	'loading_icon.gif')}}" height = 200 width = 200>
+    </div>
 
-	<!--<form action = "{{url_for('compile_and_run')}}" method = "POST">-->
 	<form>
+
 		<textarea id = "Code" name="source" style="display:none;"></textarea>
   		<label for="comment">Stdin:</label>
 		<textarea class="form-control" rows="5" id="stdin" name = "input"></textarea>
   		<input class ="btn btn-dark" style = "margin:10px;align-content: center;" name = "submit" type="submit" value="Submit"/>
-
   		<input class ="btn btn-light" style = "margin:10px;align-content: center;" onclick = "location.href = 'http://localhost:5000/'" value="Reset"/>
 
 	</form>	
 
 	<div> 
-		<textarea id = "ShowResult" class="form-control" rows="10" name = "output">
-		</textarea> 
-
-		<!-- {% if Result %}
-			<script type="text/javascript">
-				var x = {{ Result['output']|tojson }};
-				document.getElementById("output").value = x;
-				editor.setValue(value);
-			</script>
-		{% endif %} -->
-
+		<textarea id = "ShowResult" class="form-control" rows="10" name = "output"></textarea> 
 	</div>
 
 </body>
