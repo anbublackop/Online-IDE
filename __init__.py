@@ -130,9 +130,15 @@ def register_page():
 	except Exception as e:
 		return (str(e))	
 
-@app.route('/PreviousCodes/')
+@app.route('/PreviousCodes/', methods = ['GET','POST'])
 def previousCodes():
 	c, conn = connection()
+
+	if request.method == "GET":
+		uniqueid = request.args.get('hash')
+		c.execute("delete from mycode where uniqueid = (%s)",(uniqueid,))
+		conn.commit()
+
 	c.execute("select * from users where username = (%s)", (session['username'],))
 	userid = c.fetchone()[0]
 	c.execute("select * from mycode where userid = (%s)",(userid,))
