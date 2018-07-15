@@ -26,10 +26,10 @@ def checkLogin():
 	c, conn = connection()
 	username = request.form['username']
 	password = request.form['password']
-	x = c.execute("select username from users where username = (%s)",(username,))
+	x = c.execute("select username from users where BINARY username = (%s)",(username,))
 	
 	if (c.fetchone() is not None):
-		c.execute("select * from users where username = (%s) and password = (%s)",(username, password))
+		c.execute("select * from users where BINARY username = (%s) and BINARY password = (%s)",(username, password))
 		
 		if (c.fetchone() is not None):
 			session["logged_in"] = True
@@ -82,7 +82,7 @@ def compile_and_run():
 
 	if session.get('logged_in') and session.get('username'):
 		
-		c.execute("select uid from users where username = (%s)", (session['username'],))
+		c.execute("select uid from users where BINARY username = (%s)", (session['username'],))
 		userid = c.fetchone()[0]
 				
 		if not request.form.get('uniqueid'):
@@ -117,7 +117,7 @@ def register_page():
 			password = str(form.password.data)
 			c, conn = connection()
 
-			x = c.execute("select * from users where username = (%s)",(username,))
+			x = c.execute("select * from users where BINARY username = (%s)",(username,))
 			
 			if (c.fetchone() is not None):
 				flash ("The username already exists! Please choose a different username.")
@@ -154,12 +154,12 @@ def previousCodes():
 		c.execute("delete from mycode where uniqueid = (%s)",(uniqueid,))
 		conn.commit()
 
-	c.execute("select * from users where username = (%s)", (session['username'],))
+	c.execute("select * from users where BINARY username = (%s)", (session['username'],))
 	userid = c.fetchone()[0]
 	c.execute("select * from mycode where userid = (%s)",(userid,))
 	previous_codes_list = c.fetchall()
 	
-	return render_template('previouscodes.html', list = previous_codes_list)
+	return render_template('previouscodes.html', list = list(previous_codes_list))
 
 
 if __name__== '__main__':
