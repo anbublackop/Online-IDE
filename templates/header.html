@@ -1,4 +1,8 @@
-<header>
+<!DOCTYPE html>
+<html>
+<head>
+	<title> PyDee </title>
+	<header>
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'bootstrap.min.css') }}">
 	<link rel="shortcut icon" href="{{ url_for('static', filename = 'icon.png') }}">
 
@@ -8,16 +12,16 @@
 	<script type="text/javascript" src="{{url_for('static', filename = 'bootstrap.min.js')}}" ></script>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		  <a class="navbar-brand" href="#">AI/O-ide</a>
+		  <a class="navbar-brand" href="{{url_for('home')}}"> PyDee </a>
 		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
 		  </button>
 
 		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		    <ul class="navbar-nav mr-auto">
-		      	<li class="nav-item active">
-		        	<a class="nav-link" href="{{url_for('Homepage')}}"> Home <span class="sr-only">(current)</span></a>
-		      	</li>
+		    <!--{% if session['logged_in'] %}
+		    <p class="navbar-nav nav-link" style = "margin-top:8px;color:white; margin-left: 460px;"> Hello {{ session['username'] }}! </p>
+		    {% endif %}-->
+
 		      	<!--<li class="nav-item dropdown">
 		        	<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		          	Dropdown
@@ -28,13 +32,19 @@
 		          		<a class="dropdown-item text-light" href="#">Something else here</a>
 		        	</div>
 		      	</li>-->
-		      	<ul class="navbar-nav" style="margin-right:900px">
-		      		<li class="nav-item active">
-		        		<a class="nav-link" href="{{url_for('login')}}">Login<span class="sr-only">(current)</span></a>
-		      		</li>
-		  </div>
-
-		</nav>
-</header>
-
-
+		      	<ul class="navbar-nav">
+		        	{% if session['logged_in'] %}
+					<a class="nav-link" style = "margin-left:1050px;position:absolute;margin-top:-20px;" href="/PreviousCodes/"><span class="glyphicon glyphicon-log-out"></span> My Codes </a>
+					<a class="nav-link" style = "margin-left:1150px;position:absolute;margin-top:-20px;" href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout </a>
+					{% else %}
+					<a class="nav-link" style = "margin-left:1050px;position:absolute;margin-top:-20px;" href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login </a>
+					<a class="nav-link" style = "margin-left:1150px;position:absolute;margin-top:-20px;" href="/register/"><span class="glyphicon glyphicon-pencil"></span> Register</a>
+					{% endif %}	
+				</ul>
+			  </div>
+			</nav>
+		</header>
+	</head>
+	<body>
+	</body>
+</html>

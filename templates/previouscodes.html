@@ -50,36 +50,38 @@
 		</nav>
 </head>
 <body>
+	{% if list|length != 0 %}
+		<table class = "table table-striped table-sm table-bordered table-hover table-light">
+			
+				<tr>
+					<th scope = "col"> Key </th>
+					<th scope = "col"> Last modified on </th>
+					<th scope = "col"> Data </th>
+					<th scope = "col"> Remove </th>
+				</tr>
+					{% for rows in list %}
+						<tr>
+							<form action = "{{url_for('home')}}" method = "post">
 
-	<table class = "table table-striped table-sm table-bordered table-hover table-light">
-		
-			<tr>
-				<th scope = "col"> Key </th>
-				<th scope = "col"> Created On </th>
-				<th scope = "col"> Data </th>
-				<th scope = "col"> Remove </th>
-			</tr>
-		
-				{% for rows in list %}
-					<tr>
-						<form action = "{{url_for('home')}}" method = "post">
+								<td><button type="submit" name="uniqueid" value="{{ rows[4] }}" class="link-button" style="color: red; font-family: 'ubuntu';">{{ rows[4] }}</button></td>
+								<td>{{ rows[2] }}</td>
+								<td><input type ="hidden" name="data" value = "{{ rows[3] }}" >{{ rows[3] }}</td>
+							</form>	
 
-							<td><button type="submit" name="uniqueid" value="{{ rows[4] }}" class="link-button" style="color: red; font-family: 'ubuntu';">{{ rows[4] }}</button></td>
-							<td>{{ rows[2] }}</td>
-							<td><input type ="hidden" name="data" value = "{{ rows[3] }}" >{{ rows[3] }}</td>
-						</form>	
+							<form action = "{{url_for('previousCodes')}}" method = "get">
+								<td>
+									<button type="submit" name="hash" value="{{ rows[4] }}" class="link-button">
+										<img src="{{url_for('static',filename = 'delete.png')}}" height = "30" width = "30">
+									</button>
+								</td>
 
-						<form action = "{{url_for('previousCodes')}}" method = "get">
-							<td>
-								<button type="submit" name="hash" value="{{ rows[4] }}" class="link-button">
-									<img src="{{url_for('static',filename = 'delete.png')}}" height = "30" width = "30">
-								</button>
-							</td>
-
-						</form>
-					</tr>	
-				{% endfor %}
-	</table>
+							</form>
+						</tr>			
+					{% endfor %}
+		</table>
+	{% else %}
+			<div align = 'center' style = "padding:30px;"> No Items to show... </div>
+	{% endif %}	
 
 
 </body>
