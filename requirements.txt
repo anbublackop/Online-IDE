@@ -24,7 +24,6 @@ imutils==0.4.5
 inflection==0.3.1
 itsdangerous==0.24
 Jinja2==2.10
-language-selector==0.1
 louis==2.6.4
 lxml==3.5.0
 MarkupSafe==1.0
@@ -78,3 +77,4 @@ WTForms==2.1
 xkit==0.0.0
 command-not-found==0.3
 Brlapi==0.6.4
+language-selector==0.1
