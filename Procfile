@@ -1,1 +1,1 @@
-web: gunicorn __init__: app -b localhost:5000 &
+web: gunicorn application: app
