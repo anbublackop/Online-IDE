@@ -62,8 +62,8 @@ def logout():
 def compile_and_run():
 
 	endpoint_run = "https://api.jdoodle.com/v1/execute"
-	clientId = "ac4680b2f667cd4864a60e9d5cd4d18f"
-	client_secret_key = "4a941cc902adaca23c1e67330856b697726c68f84c5a88ccd1bf5c4cb7568ea3"
+	clientId = __import__('APIKeys').Keys.Client_ID
+	client_secret_key = __import__('APIKeys').Keys.Client_Secret_Key
 
 	source = request.form["source"]
 	input_received = request.form.get("input")
