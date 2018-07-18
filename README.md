@@ -35,6 +35,7 @@ After running the application, go to this address (http://0.0.0.0:5000/) on the 
 4. HTML/CSS
 5. Ace editor for web
 6. Jdoodle API
+7. Bootstrap classes
 
 # Authors
 1. Siddharth Yadav
