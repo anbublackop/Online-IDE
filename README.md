@@ -13,6 +13,7 @@ To run this application on your local machine, just fork this project on your lo
 
 # Installing
 Once, all the packages are installed and keys are added, open the terminal and run the below command:
+
 a. python3 application.py
    
   # Expected output
