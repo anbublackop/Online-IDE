@@ -134,9 +134,6 @@ def register_page():
 
 				gc.collect()
 
-				session["logged_in"] = True
-				session["username"] = username
-
 				return redirect(url_for('home'))
 
 		return render_template("register.html", form = form)
